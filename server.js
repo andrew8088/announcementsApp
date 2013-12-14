@@ -33,7 +33,7 @@ app.post("/announcements", function (req, res) {
 
 app.get('/*', function (req, res) {
     db.find(function (data) {
-        res.render("index.ejs", { announcements: data });
+        res.render("index.ejs", { as: JSON.stringify(data) });
     });
 });
 

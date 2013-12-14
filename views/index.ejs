@@ -46,7 +46,7 @@
     <script>
         var r = new AppRouter({
             main: $("#main"),
-            announcements: new Announcements(<%- announcements %>)
+            announcements: new Announcements(<%- as %>)
         });
         Backbone.history.start({ pushState: true });
     </script>
