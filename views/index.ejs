@@ -6,12 +6,6 @@
 </head>
 <body>
     <div id="main"></div>
-    <script src="/jquery.js"></script>
-    <script src="/underscore.js"></script>
-    <script src="/backbone.js"></script>
-    <script src="/models.js"></script>
-    <script src="/views.js"></script>
-    <script src="/router.js"></script>
     <script type="text/template" id="announcementsView">
         <table>
             <thead>
@@ -35,6 +29,20 @@
             <td>{{createdOn}}</td>
         </tr>
     </script>
+    <script type="text/template" id="createAnnouncementView">
+    <form method="post" action="/announcements">
+        <p>Name: <input type="text" id="name" /></p>
+        <p>Details: <textarea id="details"></textarea></p>
+        <p>Date: <input type="date" id="date" /></p>
+        <p><button> Create </button></p>
+    </form>
+    </script>
+    <script src="/jquery.js"></script>
+    <script src="/underscore.js"></script>
+    <script src="/backbone.js"></script>
+    <script src="/models.js"></script>
+    <script src="/views.js"></script>
+    <script src="/router.js"></script>
     <script>
         var r = new AppRouter({
             main: $("#main"),

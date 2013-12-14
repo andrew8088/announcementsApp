@@ -32,7 +32,9 @@ app.post("/announcements", function (req, res) {
 });
 
 app.get('/*', function (req, res) {
-    res.render("index.ejs");
+    db.find(function (data) {
+        res.render("index.ejs", { announcements: data });
+    });
 });
 
 app.listen(3000);
