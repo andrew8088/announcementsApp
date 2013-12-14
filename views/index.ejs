@@ -6,8 +6,18 @@
     </head>
     <body>
         <div id="main"></div>
+        <script src="/jquery.js"></script>
         <script src="/underscore.js"></script>
         <script src="/backbone.js"></script>
-        <script src="/app.js"></script>
+        <script src="/models.js"></script>
+        <script src="/views.js"></script>
+        <script src="/router.js"></script>
+        <script>
+            var r = new AppRouter({
+                main: $("#main"),
+                announcements: new Announcements()
+            });
+            Backbone.history.start({ pushState: true });
+        </script>
     </body>
 </html>

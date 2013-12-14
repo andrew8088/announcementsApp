@@ -1,10 +1,10 @@
-/*jslint node: true, es5: true, nomen: true */
+/*jslint node: true, es5: true, nomen: true, sloppy: true */
 var express = require('express');
 var path    = require('path');
 var Bourne  = require("bourne");
 
 var app = express();
-var db  = new Bourne("data.json");
+var db  = new Bourne("db/announcements.json");
 
 app.configure(function () {
     "use strict";
@@ -13,8 +13,7 @@ app.configure(function () {
 });
 
 app.get('/*', function (req, res) {
-    "use strict";
-    res.render("index");
+    res.render("index.ejs");
 });
 
 app.listen(3000);
