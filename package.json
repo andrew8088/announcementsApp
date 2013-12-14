@@ -1,0 +1,16 @@
+{
+  "name": "announcementsApp",
+  "description": "This application displays announcements, which it pulls from the seriver. It checks the server periodically for new announcements.",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "latest",
+    "ejs": "latest",
+    "bourne": "latest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  }
+}
