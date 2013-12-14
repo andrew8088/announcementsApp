@@ -12,6 +12,25 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
+app.get("/announcements.json", function (req, res) {
+    db.find(function (data) {
+        res.json(data);
+    });
+});
+
+app.post("/announcements", function (req, res) {
+    var a = {
+        title: req.body.title,
+        details: req.body.details,
+        date: req.body.date,
+        createdAt: new Date()
+    };
+    
+    db.insert(a, function (a) {
+        res.json(a);
+    });
+});
+
 app.get('/*', function (req, res) {
     res.render("index.ejs");
 });
