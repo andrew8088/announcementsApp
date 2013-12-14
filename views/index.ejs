@@ -1,23 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <link rel="stylesheet"  href="/style.css" />
-    </head>
-    <body>
-        <div id="main"></div>
-        <script src="/jquery.js"></script>
-        <script src="/underscore.js"></script>
-        <script src="/backbone.js"></script>
-        <script src="/models.js"></script>
-        <script src="/views.js"></script>
-        <script src="/router.js"></script>
-        <script>
-            var r = new AppRouter({
-                main: $("#main"),
-                announcements: new Announcements()
-            });
-            Backbone.history.start({ pushState: true });
-        </script>
-    </body>
+<head>
+    <title></title>
+    <link rel="stylesheet"  href="/style.css" />
+</head>
+<body>
+    <div id="main"></div>
+    <script src="/jquery.js"></script>
+    <script src="/underscore.js"></script>
+    <script src="/backbone.js"></script>
+    <script src="/models.js"></script>
+    <script src="/views.js"></script>
+    <script src="/router.js"></script>
+    <script type="text/template" id="announcementsView">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Details</th>
+                    <th>Date</th>
+                    <th>Created On</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </script>
+    <script type="text/template" id="announcementView">
+        <tr>
+            <td>{{id}}</td>
+            <td>{{title}}</td>
+            <td>{{details}}</td>
+            <td>{{date}}</td>
+            <td>{{createdOn}}</td>
+        </tr>
+    </script>
+    <script>
+        var r = new AppRouter({
+            main: $("#main"),
+            announcements: new Announcements(<%- announcements %>)
+        });
+        Backbone.history.start({ pushState: true });
+    </script>
+</body>
 </html>
