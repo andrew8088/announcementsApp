@@ -22,8 +22,12 @@ var AppRouter = Backbone.Router.extend({
     },
     create: function () {
         var cv = new CreateAnnouncementView({
-            announcements: this.announcements
+            announcements: this.announcements,
+            nav: this.navigate.bind(this)
         });
-        this.main.html(cv.render().el);
+        if ($("table").length === 0) {
+            this.index();
+        }
+        this.main.prepend(cv.render().el);
     }
 });

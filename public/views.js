@@ -58,17 +58,29 @@ var ControlsView = Backbone.View.extend({
 });
 
 var CreateAnnouncementView = Backbone.View.extend({
-    tagName: "form",
+    className: "modal hide fade",
     template: Templates.createAnnouncement,
     events: {
-        "click button": "create"
+        "click .close": "close",
+        "click #create": "create"
     },
     initialize: function (options) {
+        var thiz = this;
         this.announcements = options.announcements;
+        this.nav = options.nav;
+        this.$el.on("hidden", function () {
+            thiz.remove();
+            thiz.nav("/");
+        });
     },
     render: function () {
         this.el.innerHTML = this.template();
+        this.$el.modal("show");
         return this;
+    },
+    close: function (evt) {
+        evt.preventDefault();
+        this.$el.modal("hide");
     },
     create: function (evt) {
         evt.preventDefault();
@@ -78,6 +90,7 @@ var CreateAnnouncementView = Backbone.View.extend({
             date: this.$("#date").val()
         };
         this.announcements.create(a);
+        this.$el.modal("hide");
         return false;
     }
 });
