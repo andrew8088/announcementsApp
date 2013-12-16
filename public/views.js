@@ -1,5 +1,5 @@
 /*jslint nomen: true, sloppy: true */
-/*globals Backbone, $, _ */
+/*globals Backbone, $, _, console */
 
 var Templates = {
     announcements: _.template($("#announcementsView").html()),
@@ -33,12 +33,26 @@ var AnnouncementsView = Backbone.View.extend({
 });
 
 var CreateAnnouncementView = Backbone.View.extend({
+    tagName: "form",
     template: Templates.createAnnouncement,
+    events: {
+        "click button": "create"
+    },
     initialize: function (options) {
         this.announcements = options.announcements;
     },
     render: function () {
         this.el.innerHTML = this.template();
         return this;
+    },
+    create: function (evt) {
+        evt.preventDefault();
+        var a = {
+            title: this.$("#title").val(),
+            details: this.$("#details").val(),
+            date: this.$("#date").val()
+        };
+        this.announcements.create(a);
+        return false;
     }
 });
