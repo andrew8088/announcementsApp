@@ -1,5 +1,5 @@
 /*jslint nomen: true, sloppy: true, regexp: true */
-/*globals Backbone, $, _, console */
+/*globals Backbone, $, _, console, Event */
 
 _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
@@ -8,8 +8,7 @@ _.templateSettings = {
 var Templates = {
     events: _.template($("#eventsView").html()),
     event: _.template($("#eventView").html()),
-    createEvent: _.template($("#createEventView").html()),
-    editEvent: _.template($("#editEventView").html()),
+    modifyEvent: _.template($("#modifyEventView").html()),
     controls: _.template($("#controlsView").html())
 };
 
@@ -86,68 +85,31 @@ var ControlsView = Backbone.View.extend({
     }
 });
 
-var CreateEventView = Backbone.View.extend({
+var ModifyEventView = Backbone.View.extend({
     className: "modal hide fade",
-    template: Templates.createEvent,
+    template: Templates.modifyEvent,
     events: {
         "click .close": "close",
-        "click #create": "create"
+        "click .modify": "modify"
     },
     initialize: function (options) {
         var thiz = this;
-        this.evts = options.evts;
         this.nav = options.nav;
         this.$el.on("hidden", function () {
             thiz.remove();
             thiz.nav("/");
         });
     },
-    render: function () {
-        this.el.innerHTML = this.template();
-        this.$el.modal("show");
-        return this;
-    },
     close: function (evt) {
         evt.preventDefault();
         this.$el.modal("hide");
     },
-    create: function (evt) {
-        evt.preventDefault();
-        var a = {
-            title: this.$("#title").val(),
-            details: this.$("#details").val(),
-            date: this.$("#date").val()
-        };
-        this.evts.create(a, { wait: true });
-        this.$el.modal("hide");
-        return false;
-    }
-});
-
-var EditEventView = Backbone.View.extend({
-    className: "modal hide fade",
-    template: Templates.editEvent,
-    events: {
-        'click .close': 'close',
-        'click .modify': 'modify'
-    },
-    initialize: function (options) {
-        var thiz = this;
-        this.event = options.event;
-        this.nav = options.nav;
-        this.$el.on("hidden", function () {
-            thiz.remove();
-            thiz.nav("/");
-        });
-    },
-    render: function () {
-        this.el.innerHTML = this.template(this.model.toJSON());
+    render: function (model) {
+        var data = this.model.toJSON();
+        data.heading = this.heading;
+        this.el.innerHTML = this.template(data);
         this.$el.modal("show");
         return this;
-    },
-    close: function (evt) {
-        evt.preventDefault();
-        this.$el.modal("hide");
     },
     modify: function (evt) {
         evt.preventDefault();
@@ -156,8 +118,26 @@ var EditEventView = Backbone.View.extend({
             details: this.$("#details").val(),
             date: this.$("#date").val()
         };
-        this.model.save(a);
         this.$el.modal("hide");
+        this.save(a);
         return false;
+    }
+});
+
+var CreateEventView = ModifyEventView.extend({
+    heading: "Create New Event",
+    initialize: function (options) {
+        ModifyEventView.prototype.initialize.call(this, options);
+        this.model = new Event();
+    },
+    save: function (e) {
+        this.collection.create(e, { wait: true });
+    }
+});
+
+var EditEventView = ModifyEventView.extend({
+    heading: "Edit Event",
+    save: function (e) {
+        this.model.save(e);
     }
 });

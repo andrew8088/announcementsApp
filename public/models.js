@@ -1,6 +1,12 @@
 /*jslint sloppy: true, browser: true */
 /*globals Backbone */
-var Event = Backbone.Model.extend({});
+var Event = Backbone.Model.extend({
+    defaults: {
+        title: "",
+        details: "",
+        date: ""
+    }
+});
 var Events = Backbone.Collection.extend({
     model: Event,
     url: '/events',

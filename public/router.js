@@ -24,7 +24,7 @@ var AppRouter = Backbone.Router.extend({
     },
     create: function () {
         var cv = new CreateEventView({
-            evts: this.events,
+            collection: this.events,
             nav: this.navigate.bind(this)
         });
         if ($("table").length === 0) {
