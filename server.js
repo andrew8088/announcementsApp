@@ -40,7 +40,7 @@ app.put("/events/:id", function (req, res) {
     
     db.update({ id: parseInt(req.params.id, 10) }, e, function (e) {
         res.json(e);
-    });   
+    });
 });
 
 app.delete("/events/:id", function (req, res) {
