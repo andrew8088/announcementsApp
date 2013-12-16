@@ -23,7 +23,7 @@ app.post("/announcements", function (req, res) {
         title: req.body.title,
         details: req.body.details,
         date: req.body.date,
-        createdAt: new Date()
+        createdOn: new Date()
     };
     
     db.insert(a, function (a) {
