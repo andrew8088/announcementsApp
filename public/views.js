@@ -25,6 +25,9 @@ var AnnouncementsView = Backbone.View.extend({
     tagName: "table",
     className: "table table-striped",
     template: Templates.announcements,
+    initialize: function () {
+        this.collection.on("add", this.addRow, this);
+    },
     render: function () {
         this.el.innerHTML = this.template();
         this.collection.forEach(this.addRow, this);
@@ -89,7 +92,7 @@ var CreateAnnouncementView = Backbone.View.extend({
             details: this.$("#details").val(),
             date: this.$("#date").val()
         };
-        this.announcements.create(a);
+        this.announcements.create(a, { wait: true });
         this.$el.modal("hide");
         return false;
     }
