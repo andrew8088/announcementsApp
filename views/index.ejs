@@ -2,32 +2,28 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet"  href="/style.css" />
+    <link rel="stylesheet"  href="/bootstrap.min.css" />
 </head>
 <body>
     <div id="main"></div>
     <script type="text/template" id="announcementsView">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Details</th>
-                    <th>Date</th>
-                    <th>Created On</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Details</th>
+                <th>Date</th>
+                <th>Created On</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </script>
     <script type="text/template" id="announcementView">
-        <tr>
-            <td>{{id}}</td>
-            <td>{{title}}</td>
-            <td>{{details}}</td>
-            <td>{{date}}</td>
-            <td>{{createdOn}}</td>
-        </tr>
+        <td>{{id}}</td>
+        <td>{{title}}</td>
+        <td>{{details}}</td>
+        <td>{{date}}</td>
+        <td>{{createdOn}}</td>
     </script>
     <script type="text/template" id="createAnnouncementView">
         <p>Name: <input type="text" id="title" /></p>

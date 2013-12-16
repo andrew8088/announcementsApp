@@ -1,5 +1,9 @@
-/*jslint nomen: true, sloppy: true */
+/*jslint nomen: true, sloppy: true, regexp: true */
 /*globals Backbone, $, _, console */
+
+_.templateSettings = {
+    interpolate: /\{\{(.+?)\}\}/g
+};
 
 var Templates = {
     announcements: _.template($("#announcementsView").html()),
@@ -11,14 +15,14 @@ var AnnouncementView = Backbone.View.extend({
     tagName: "tr",
     template: Templates.announcement,
     render: function () {
-        this.el.innerHTML = this.template({
-            model: this.model.toJSON()
-        });
+        this.el.innerHTML = this.template(this.model.toJSON());
+        return this;
     }
 });
 
 var AnnouncementsView = Backbone.View.extend({
     tagName: "table",
+    className: "table table-striped",
     template: Templates.announcements,
     render: function () {
         this.el.innerHTML = this.template();
