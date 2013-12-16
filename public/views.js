@@ -9,6 +9,7 @@ var Templates = {
     events: _.template($("#eventsView").html()),
     event: _.template($("#eventView").html()),
     createEvent: _.template($("#createEventView").html()),
+    editEvent: _.template($("#editEventView").html()),
     controls: _.template($("#controlsView").html())
 };
 
@@ -16,10 +17,13 @@ var EventView = Backbone.View.extend({
     tagName: "tr",
     template: Templates.event,
     events: {
-        "click .delete" : "destroy"
+        "click .delete" : "destroy",
+        "click .edit"   : "edit"
     },
-    initialize: function () {
+    initialize: function (options) {
+        this.nav = options.nav;
         this.model.on("remove", this.remove, this);
+        this.model.on("change", this.render, this);
     },
     render: function () {
         this.el.innerHTML = this.template(this.model.toJSON());
@@ -33,6 +37,10 @@ var EventView = Backbone.View.extend({
         evt.preventDefault();
         this.model.destroy();
         this.remove();
+    },
+    edit: function (evt) {
+        evt.preventDefault();
+        this.nav("/edit/" + this.model.get("id"), { trigger: true });
     }
 });
 
@@ -40,7 +48,8 @@ var EventsView = Backbone.View.extend({
     tagName: "table",
     className: "table table-striped",
     template: Templates.events,
-    initialize: function () {
+    initialize: function (options) {
+        this.nav = options.nav;
         this.collection.on("add", this.addRow, this);
         this.collection.refresh();
     },
@@ -51,7 +60,8 @@ var EventsView = Backbone.View.extend({
     },
     addRow: function (event) {
         this.$("tbody").append(new EventView({
-            model: event
+            model: event,
+            nav: this.nav
         }).render().el);
     }
 });
@@ -109,6 +119,44 @@ var CreateEventView = Backbone.View.extend({
             date: this.$("#date").val()
         };
         this.evts.create(a, { wait: true });
+        this.$el.modal("hide");
+        return false;
+    }
+});
+
+var EditEventView = Backbone.View.extend({
+    className: "modal hide fade",
+    template: Templates.editEvent,
+    events: {
+        'click .close': 'close',
+        'click .modify': 'modify'
+    },
+    initialize: function (options) {
+        var thiz = this;
+        this.event = options.event;
+        this.nav = options.nav;
+        this.$el.on("hidden", function () {
+            thiz.remove();
+            thiz.nav("/");
+        });
+    },
+    render: function () {
+        this.el.innerHTML = this.template(this.model.toJSON());
+        this.$el.modal("show");
+        return this;
+    },
+    close: function (evt) {
+        evt.preventDefault();
+        this.$el.modal("hide");
+    },
+    modify: function (evt) {
+        evt.preventDefault();
+        var a = {
+            title: this.$("#title").val(),
+            details: this.$("#details").val(),
+            date: this.$("#date").val()
+        };
+        this.model.save(a);
         this.$el.modal("hide");
         return false;
     }

@@ -19,16 +19,28 @@ app.get("/events", function (req, res) {
 });
 
 app.post("/events", function (req, res) {
-    var a = {
+    var e = {
         title: req.body.title,
         details: req.body.details,
         date: req.body.date,
         createdOn: new Date()
     };
     
-    db.insert(a, function (a) {
-        res.json(a);
+    db.insert(e, function (e) {
+        res.json(e);
     });
+});
+
+app.put("/events/:id", function (req, res) {
+    var e = {
+        title: req.body.title,
+        details: req.body.details,
+        date: req.body.date
+    };
+    
+    db.update({ id: parseInt(req.params.id, 10) }, e, function (e) {
+        res.json(e);
+    });   
 });
 
 app.delete("/events/:id", function (req, res) {
