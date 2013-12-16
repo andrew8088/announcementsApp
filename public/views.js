@@ -25,10 +25,22 @@ var EventView = Backbone.View.extend({
         this.model.on("change", this.render, this);
     },
     render: function () {
-        var data = this.model.toJSON();
-        data.date = moment(data.date).calendar();
-        data.createdOn = moment(data.createdOn).fromNow();
-        this.el.innerHTML = this.template(data);
+        var attrs = this.model.toJSON(),
+            date = moment(attrs.date),
+            diff = date.unix() - moment().unix();
+        
+        attrs.date = date.calendar();
+        attrs.createdOn = moment(attrs.createdOn).fromNow();
+        this.el.innerHTML = this.template(attrs);
+        
+        if (diff < 0) {
+            this.el.className = "error";
+        } else if (diff < 172800) {
+            this.el.className = "warning";
+        } else if (diff < 604800) {
+            this.el.className = "info";
+        }
+        
         return this;
     },
     remove: function () {
