@@ -6,25 +6,25 @@ _.templateSettings = {
 };
 
 var Templates = {
-    announcements: _.template($("#announcementsView").html()),
-    announcement: _.template($("#announcementView").html()),
-    createAnnouncement: _.template($("#createAnnouncementView").html()),
+    events: _.template($("#eventsView").html()),
+    event: _.template($("#eventView").html()),
+    createEvent: _.template($("#createEventView").html()),
     controls: _.template($("#controlsView").html())
 };
 
-var AnnouncementView = Backbone.View.extend({
+var EventView = Backbone.View.extend({
     tagName: "tr",
-    template: Templates.announcement,
+    template: Templates.event,
     render: function () {
         this.el.innerHTML = this.template(this.model.toJSON());
         return this;
     }
 });
 
-var AnnouncementsView = Backbone.View.extend({
+var EventsView = Backbone.View.extend({
     tagName: "table",
     className: "table table-striped",
-    template: Templates.announcements,
+    template: Templates.events,
     initialize: function () {
         this.collection.on("add", this.addRow, this);
         this.collection.refresh();
@@ -34,9 +34,9 @@ var AnnouncementsView = Backbone.View.extend({
         this.collection.forEach(this.addRow, this);
         return this;
     },
-    addRow: function (annoucement) {
-        this.$("tbody").append(new AnnouncementView({
-            model: annoucement
+    addRow: function (event) {
+        this.$("tbody").append(new EventView({
+            model: event
         }).render().el);
     }
 });
@@ -61,16 +61,16 @@ var ControlsView = Backbone.View.extend({
     }
 });
 
-var CreateAnnouncementView = Backbone.View.extend({
+var CreateEventView = Backbone.View.extend({
     className: "modal hide fade",
-    template: Templates.createAnnouncement,
+    template: Templates.createEvent,
     events: {
         "click .close": "close",
         "click #create": "create"
     },
     initialize: function (options) {
         var thiz = this;
-        this.announcements = options.announcements;
+        this.evts = options.evts;
         this.nav = options.nav;
         this.$el.on("hidden", function () {
             thiz.remove();
@@ -93,7 +93,7 @@ var CreateAnnouncementView = Backbone.View.extend({
             details: this.$("#details").val(),
             date: this.$("#date").val()
         };
-        this.announcements.create(a, { wait: true });
+        this.evts.create(a, { wait: true });
         this.$el.modal("hide");
         return false;
     }

@@ -4,7 +4,7 @@ var path    = require('path');
 var Bourne  = require("bourne");
 
 var app = express();
-var db  = new Bourne("db/announcements.json");
+var db  = new Bourne("db/events.json");
 
 app.configure(function () {
     "use strict";
@@ -12,13 +12,13 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get("/announcements", function (req, res) {
+app.get("/events", function (req, res) {
     db.find(function (data) {
         res.json(data);
     });
 });
 
-app.post("/announcements", function (req, res) {
+app.post("/events", function (req, res) {
     var a = {
         title: req.body.title,
         details: req.body.details,

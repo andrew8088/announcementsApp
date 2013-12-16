@@ -1,9 +1,9 @@
 /*jslint sloppy: true, browser: true */
 /*globals Backbone */
-var Announcement = Backbone.Model.extend({});
-var Announcements = Backbone.Collection.extend({
-    model: Announcement,
-    url: '/announcements',
+var Event = Backbone.Model.extend({});
+var Events = Backbone.Collection.extend({
+    model: Event,
+    url: '/events',
     initialize: function (models, options) {
         this.wait = (options && options.wait) || 10000;
     },
