@@ -1,5 +1,5 @@
 /*jslint sloppy:true */
-/*global Backbone, console, AnnouncementsView, CreateAnnouncementView */
+/*global $, Backbone, console, AnnouncementsView, CreateAnnouncementView, ControlsView */
 
 var AppRouter = Backbone.Router.extend({
     initialize: function (options) {
@@ -11,10 +11,14 @@ var AppRouter = Backbone.Router.extend({
         'create': 'create'
     },
     index: function () {
-        var av = new AnnouncementsView({
-            collection: this.announcements
-        });
-        this.main.html(av.render().el);
+        var cv = new ControlsView({
+            nav: this.navigate.bind(this)
+        }),
+            av = new AnnouncementsView({
+                collection: this.announcements
+            });
+        this.main.html(cv.render().el);
+        this.main.append(av.render().el);
     },
     create: function () {
         var cv = new CreateAnnouncementView({
