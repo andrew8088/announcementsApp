@@ -60,16 +60,20 @@ var EventView = Backbone.View.extend({
 
 var EventsView = Backbone.View.extend({
     tagName: "table",
-    className: "table table-striped",
+    className: "table",
     template: Templates.events,
+    events: {
+        'click th': 'sort'
+    },
     initialize: function (options) {
         this.nav = options.nav;
         this.collection.on("add", this.addRow, this);
+        this.collection.on("sort", this.renderRows, this);
         this.collection.refresh();
     },
     render: function () {
         this.el.innerHTML = this.template();
-        this.collection.forEach(this.addRow, this);
+        this.renderRows();
         return this;
     },
     addRow: function (event) {
@@ -77,6 +81,26 @@ var EventsView = Backbone.View.extend({
             model: event,
             nav: this.nav
         }).render().el);
+    },
+    renderRows: function () {
+        this.$("tbody").empty();
+        this.collection.forEach(this.addRow, this);
+    },
+    sort: function (evt) {
+        var target = evt.currentTarget,
+            c = this.collection;
+        
+        c.comparator = target.getAttribute("data-field");
+        
+        if (target.getAttribute("data-direction") === "desc") {
+            c.sort();
+            target.setAttribute("data-direction", "asc");
+        } else {
+            c.sort({ silent: true });
+            c.models = c.models.reverse();
+            c.trigger('sort', c, {});
+            target.setAttribute("data-direction", "desc");
+        }
     }
 });
 
