@@ -5,6 +5,7 @@ var AppRouter = Backbone.Router.extend({
     initialize: function (options) {
         this.main = options.main;
         this.events = options.events;
+        this.nav = this.navigate.bind(this);
     },
     routes: {
         '': 'index',
@@ -13,11 +14,11 @@ var AppRouter = Backbone.Router.extend({
     },
     index: function () {
         var cv = new ControlsView({
-            nav: this.navigate.bind(this)
+            nav: this.nav
         }),
             av = new EventsView({
                 collection: this.events,
-                nav: this.navigate.bind(this)
+                nav: this.nav
             });
         this.main.html(cv.render().el);
         this.main.append(av.render().el);
@@ -25,21 +26,21 @@ var AppRouter = Backbone.Router.extend({
     create: function () {
         var cv = new CreateEventView({
             collection: this.events,
-            nav: this.navigate.bind(this)
+            nav: this.nav
         });
-        if ($("table").length === 0) {
-            this.index();
-        }
-        this.main.prepend(cv.render().el);
+        this.modal(cv);
     },
     edit: function (id) {
         var ev = new EditEventView({
             model: this.events.get(parseInt(id, 10)),
-            nav: this.navigate.bind(this)
+            nav: this.nav
         });
+        this.modal(ev);
+    },
+    modal: function (view) {
         if ($("table").length === 0) {
             this.index();
         }
-        this.main.prepend(ev.render().el);
+        this.main.prepend(view.render().el);
     }
 });
