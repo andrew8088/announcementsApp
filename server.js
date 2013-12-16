@@ -12,7 +12,7 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get("/announcements.json", function (req, res) {
+app.get("/announcements", function (req, res) {
     db.find(function (data) {
         res.json(data);
     });
