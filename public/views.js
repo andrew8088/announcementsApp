@@ -27,6 +27,7 @@ var AnnouncementsView = Backbone.View.extend({
     template: Templates.announcements,
     initialize: function () {
         this.collection.on("add", this.addRow, this);
+        this.collection.refresh();
     },
     render: function () {
         this.el.innerHTML = this.template();
