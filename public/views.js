@@ -15,9 +15,24 @@ var Templates = {
 var EventView = Backbone.View.extend({
     tagName: "tr",
     template: Templates.event,
+    events: {
+        "click .delete" : "destroy"
+    },
+    initialize: function () {
+        this.model.on("remove", this.remove, this);
+    },
     render: function () {
         this.el.innerHTML = this.template(this.model.toJSON());
         return this;
+    },
+    remove: function () {
+        this.$el.fadeOut(Backbone.View.prototype.remove.bind(this));
+        return false;
+    },
+    destroy: function (evt) {
+        evt.preventDefault();
+        this.model.destroy();
+        this.remove();
     }
 });
 

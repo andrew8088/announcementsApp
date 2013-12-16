@@ -31,6 +31,12 @@ app.post("/events", function (req, res) {
     });
 });
 
+app.delete("/events/:id", function (req, res) {
+    db.delete({ id: parseInt(req.params.id, 10) }, function () {
+        res.json({});
+    });
+});
+
 app.get('/*', function (req, res) {
     db.find(function (data) {
         res.render("index.ejs", { as: JSON.stringify(data) });
