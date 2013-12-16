@@ -1,5 +1,5 @@
 /*jslint nomen: true, sloppy: true, regexp: true */
-/*globals Backbone, $, _, console, Event */
+/*globals Backbone, $, _, console, Event, moment */
 
 _.templateSettings = {
     interpolate: /\{\{(.+?)\}\}/g
@@ -25,7 +25,10 @@ var EventView = Backbone.View.extend({
         this.model.on("change", this.render, this);
     },
     render: function () {
-        this.el.innerHTML = this.template(this.model.toJSON());
+        var data = this.model.toJSON();
+        data.date = moment(data.date).calendar();
+        data.createdOn = moment(data.createdOn).fromNow();
+        this.el.innerHTML = this.template(data);
         return this;
     },
     remove: function () {
