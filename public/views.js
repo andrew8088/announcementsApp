@@ -107,6 +107,7 @@ var ModifyEventView = Backbone.View.extend({
     render: function (model) {
         var data = this.model.toJSON();
         data.heading = this.heading;
+        data.btnText = this.btnText;
         this.el.innerHTML = this.template(data);
         this.$el.modal("show");
         return this;
@@ -126,6 +127,7 @@ var ModifyEventView = Backbone.View.extend({
 
 var CreateEventView = ModifyEventView.extend({
     heading: "Create New Event",
+    btnText: "Create",
     initialize: function (options) {
         ModifyEventView.prototype.initialize.call(this, options);
         this.model = new Event();
@@ -137,6 +139,7 @@ var CreateEventView = ModifyEventView.extend({
 
 var EditEventView = ModifyEventView.extend({
     heading: "Edit Event",
+    btnText: "Update",
     save: function (e) {
         this.model.save(e);
     }
