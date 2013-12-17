@@ -11,6 +11,8 @@
     "bourne": "latest"
   },
   "devDependencies": {
-    "nodemon": "latest"
+    "nodemon": "latest",
+    "grunt-contrib-jst": "~0.5.1",
+    "grunt": "~0.4.2"
   }
 }

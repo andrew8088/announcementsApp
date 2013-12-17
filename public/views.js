@@ -1,20 +1,9 @@
 /*jslint nomen: true, sloppy: true, regexp: true */
-/*globals Backbone, $, _, console, Event, moment */
-
-_.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g
-};
-
-var Templates = {
-    events: _.template($("#eventsView").html()),
-    event: _.template($("#eventView").html()),
-    modifyEvent: _.template($("#modifyEventView").html()),
-    controls: _.template($("#controlsView").html())
-};
+/*globals Backbone, $, _, console, Event, moment, JST */
 
 var EventView = Backbone.View.extend({
     tagName: "tr",
-    template: Templates.event,
+    template: JST.event,
     events: {
         "click .delete" : "destroy",
         "click .edit"   : "edit"
@@ -61,7 +50,7 @@ var EventView = Backbone.View.extend({
 var EventsView = Backbone.View.extend({
     tagName: "table",
     className: "table",
-    template: Templates.events,
+    template: JST.events,
     events: {
         'click th[data-field]': 'sort'
     },
@@ -105,7 +94,7 @@ var EventsView = Backbone.View.extend({
 var ControlsView = Backbone.View.extend({
     tagName: "ul",
     className: "nav nav-pills",
-    template: Templates.controls,
+    template: JST.controls,
     initialize: function (options) {
         this.nav = options.nav;
     },
@@ -124,7 +113,7 @@ var ControlsView = Backbone.View.extend({
 
 var ModifyEventView = Backbone.View.extend({
     className: "modal hide fade",
-    template: Templates.modifyEvent,
+    template: JST.modifyEvent,
     events: {
         "click .close": "close",
         "click .modify": "modify"
