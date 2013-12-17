@@ -19,5 +19,10 @@ var Events = Backbone.Collection.extend({
     refresh: function () {
         setTimeout(this.refresh.bind(this), this.wait);
         return this.fetch();
+    },
+    reverse: function (options) {
+        this.sort({ silent: true });
+        this.models = this.models.reverse();
+        this.trigger('sort', this, options);
     }
 });

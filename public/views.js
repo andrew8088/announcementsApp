@@ -63,7 +63,7 @@ var EventsView = Backbone.View.extend({
     className: "table",
     template: Templates.events,
     events: {
-        'click th': 'sort'
+        'click th[data-field]': 'sort'
     },
     initialize: function (options) {
         this.nav = options.nav;
@@ -92,14 +92,12 @@ var EventsView = Backbone.View.extend({
         
         c.comparator = target.getAttribute("data-field");
         
-        if (target.getAttribute("data-direction") === "desc") {
+        if (target.getAttribute("data-direction") === "asc") {
+            c.reverse();
+            target.setAttribute("data-direction", "desc");
+        } else {
             c.sort();
             target.setAttribute("data-direction", "asc");
-        } else {
-            c.sort({ silent: true });
-            c.models = c.models.reverse();
-            c.trigger('sort', c, {});
-            target.setAttribute("data-direction", "desc");
         }
     }
 });
