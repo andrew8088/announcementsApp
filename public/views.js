@@ -10,8 +10,8 @@ var EventView = Backbone.View.extend({
     },
     initialize: function (options) {
         this.nav = options.nav;
-        this.model.on("remove", this.remove, this);
-        this.model.on("change", this.render, this);
+        this.listenTo(this.model, "remove", this.remove);
+        this.listenTo(this.model, "change", this.render);
     },
     render: function () {
         var attrs = this.model.toJSON(),
@@ -57,14 +57,14 @@ var EventsView = Backbone.View.extend({
     initialize: function (options) {
         this.nav = options.nav;
         this.children = {};
-        this.collection.on("add", this.addRow, this);
-        this.collection.on("sort", this.renderRows, this);
+        this.listenTo(this.collection, 'add', this.addRow);
+        this.listenTo(this.collection, 'sort', this.renderRows);
         this.collection.refresh();
     },
     render: function () {
         this.el.innerHTML = this.template();
-        var target = this.$("th[data-field='" + this.collection.comparator + "']").get(0);
-        this.fixSortIcons(target, "asc");
+        var target = this.$("th[data-field='" + this.collection.comparator + "']");
+        this.fixSortIcons(target.get(0), "asc");
         this.renderRows();
         return this;
     },
@@ -133,10 +133,11 @@ var ModifyEventView = Backbone.View.extend({
     initialize: function (options) {
         var thiz = this;
         this.nav = options.nav;
-        this.$el.on("hidden", function () {
-            thiz.remove();
-            thiz.nav("/");
-        });
+        this.$el.on("hidden", this.hide.bind(this));
+    },
+    hide: function () {
+        this.remove();
+        this.nav('/');
     },
     close: function (evt) {
         evt.preventDefault();

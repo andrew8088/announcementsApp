@@ -13,8 +13,8 @@ var Events = Backbone.Collection.extend({
     comparator: 'date',
     initialize: function (models, options) {
         this.wait = (options && options.wait) || 10000;
-        this.on("change", this.sort, this);
-        this.on("add", this.sort, this);
+        this.listenTo(this, 'change', this.sort);
+        this.listenTo(this, 'add', this.sort);
     },
     refresh: function () {
         setTimeout(this.refresh.bind(this), this.wait);
