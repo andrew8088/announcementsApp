@@ -62,6 +62,8 @@ var EventsView = Backbone.View.extend({
     },
     render: function () {
         this.el.innerHTML = this.template();
+        var target = this.$("th[data-field='" + this.collection.comparator + "']").get(0);
+        this.fixSortIcons(target, "asc");
         this.renderRows();
         return this;
     },
@@ -75,6 +77,12 @@ var EventsView = Backbone.View.extend({
         this.$("tbody").empty();
         this.collection.forEach(this.addRow, this);
     },
+    fixSortIcons: function (target, dir) {
+        var icon = 'icon-arrow-' + (dir === 'asc' ? 'down' : 'up');
+        this.$("th i").remove();
+        target.setAttribute("data-direction", dir);
+        $("<i>").addClass(icon).appendTo(target);
+    },
     sort: function (evt) {
         var target = evt.currentTarget,
             c = this.collection;
@@ -83,10 +91,10 @@ var EventsView = Backbone.View.extend({
         
         if (target.getAttribute("data-direction") === "asc") {
             c.reverse();
-            target.setAttribute("data-direction", "desc");
+            this.fixSortIcons(target, "desc");
         } else {
             c.sort();
-            target.setAttribute("data-direction", "asc");
+            this.fixSortIcons(target, "asc");
         }
     }
 });
