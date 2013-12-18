@@ -56,6 +56,7 @@ var EventsView = Backbone.View.extend({
     },
     initialize: function (options) {
         this.nav = options.nav;
+        this.children = {};
         this.collection.on("add", this.addRow, this);
         this.collection.on("sort", this.renderRows, this);
         this.collection.refresh();
@@ -68,13 +69,16 @@ var EventsView = Backbone.View.extend({
         return this;
     },
     addRow: function (event) {
-        this.$("tbody").append(new EventView({
-            model: event,
-            nav: this.nav
-        }).render().el);
+        if (!this.children[event.id]) {
+            this.children[event.id] = new EventView({
+                model: event,
+                nav: this.nav
+            }).render();
+        }
+        
+        this.$("tbody").append(this.children[event.id].el);
     },
     renderRows: function () {
-        this.$("tbody").empty();
         this.collection.forEach(this.addRow, this);
     },
     fixSortIcons: function (target, dir) {
